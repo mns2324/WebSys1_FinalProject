@@ -1,0 +1,191 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #000000;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+}
+
+.boxcontainer {
+  background: #1a7af72a;
+  border: 2px solid #1aeff7;
+  border-radius: 6px;
+  padding: 20px;
+  max-width: 320px;
+  min-width: 300px;
+  margin: 8px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 12px;
+}
+
+.add-game, .currentgames-backlog, .task-input, .task-list {
+  background: #1a7af72a;
+  border: 2px solid #1aeff7;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.add-game h2, .task-input h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.input-group span {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.input-group input, .input-group textarea {
+  width: 55%;
+  padding: 5px;
+  background-color: black;
+  color: white;
+  border: 1px solid #0a7588;
+  text-align: center;
+  font-size: 12px;
+}
+
+.input-group .biginputbox {
+  width: 100%;
+  padding: 50px;
+  margin-top: 10px;
+}
+
+.input-group .taskinputbox {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  border: none;
+  border: 2px solid #00f7ff;
+  background: #1a7af72a;
+  color: white; /* doesn't take the white from body for some reason */
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.list-section h3 {
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 2px 0;
+}
+
+.task-list li {
+  justify-content: flex-start;
+  gap: 8px 15px;
+}
+
+.task-list button {
+  margin-bottom: 4px; /* hopefully centered */
+}
+
+/* changed the status spans for tasks into buttons,
+hopefully this retains the style they had originally */
+#statusToggleBtn { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+  width: auto;
+  text-align: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: black;
+  border: none;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+  text-align: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: black;
+}
+
+.not-started { background-color: #e74c3c;}  
+.in-progress { background-color: #f1c40f;}  
+.complete { background-color: #2ecc71;} 
+
+.view, .remove, .add-btnBacklog {
+  width: auto;
+  font-size: 10px;
+  padding: 3px 8px;
+}
+
+.remove{
+  border: 2px solid rgb(255, 0, 0);
+  background: rgba(255, 0, 0, 0.452);
+}
+
+.hdivider {
+  border: 1px solid #8cc1ec;
+  margin: 10px 0;
+}
+
+#lightdarktoggle {
+  border: 2px solid #ffffff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  max-width: 65px;
+}
+
+.active{
+  display: block;
+}
+
+.inactive{
+  display: none;
+}

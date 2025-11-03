@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="finalprojectstyle.css">
+    <title>Convenient Game Tracker</title>
+</head>
+<body>
+  <div id="gametrackercontainer" class="boxcontainer">
+    <h1>GAME TRACKER</h1>
+
+    <div class="add-game">
+      <h2>Add a game to track...</h2>
+      <div class="input-group">
+        <span>Game:</span>
+        <input type="text" id="gameinput" placeholder="Type here">
+      </div>
+      <div class="input-group">
+        <span>Genre:</span>
+        <input type="text" id="genreinput" placeholder="Type here">
+      </div>
+      <button class="add-btn">ADD TO CURRENT GAMES</button>
+      <button class="later-btn">PLAY THIS GAME LATER</button>
+    </div>
+
+    <div class="currentgames-backlog">
+      <h3 id="currentgamestotal">Currently Playing</h3>
+      <ul id="currentGamesList">
+        <p id="placeholderGame">Currently playing no games.</p>
+        <!-- <li>
+          <span>1. Game - Genre</span>
+          <span class="status not-started">NOT STARTED</span>
+          <div class="btn-group">           
+            <button class="view">VIEW TASKS</button>
+            <button class="remove">X</button>
+          </div>  
+        </li> -->
+      </ul>
+
+      <div class="hdivider"></div>
+
+      <h3 id="backlogtotal">Your Backlog</h3>
+      <ul id="backlogList">
+        <p id="placeholderBacklog">Your backlog is empty!</p>
+        <!-- <li>1. Game - Genre
+        <div class="btn-group">
+          <button class="add-btnBacklog">ADD TO CURRENT GAMES</button>
+          <button class="remove">X</button>
+        </div>
+        </li>-->
+      </ul>
+    </div>
+  </div>
+
+  <div id="gametaskscontainer" class="boxcontainer inactive">
+    <h1 id="tasksfor"><!--TASKS FOR: Game--></h1>
+
+    <div class="task-input">
+      <h2>Add tasks...</h2>
+      <div class="input-group">
+        <span>Summary:</span>
+        <textarea class="biginputbox" id="summaryinput" type="text" placeholder="Type here"></textarea>
+      </div>
+      <div class="input-group">
+        <span>Task:</span>
+        <input class="taskinputbox" id="taskinput" type="text" placeholder="Type here">
+      </div>
+      <button class="add-btn" id="addtasks">ADD TO TASKS</button>
+    </div>
+    <div class="task-list">
+      <h3>Description:</h3>
+        <p id="placeholderDesc">
+          No description added yet.
+          <!-- yap session goes here -->
+        </p>
+      <h3>Your List:</h3>
+      <ul id="taskList">
+        <p id="placeholderTask">No tasks added yet.</p>
+        <!-- <li>
+          <span>1. Complete 3A with Golden Strawberry</span>
+          <button class="status not-started">NOT DONE</button>   
+          <button class="remove">X</button>
+        </li> -->
+      </ul> 
+      <button id="clearalltasks" class="remove inactive">CLEAR ALL</button>
+    </div> 
+  </div>
+
+  <button id="lightdarktoggle">
+    Toggle
+    Light
+    Mode
+  </button>
+</body>
+
+<script src="finalprojectscript.js"></script>
+</html>
