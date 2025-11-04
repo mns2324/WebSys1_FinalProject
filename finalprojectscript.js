@@ -221,8 +221,10 @@ addTasks.addEventListener("click", function () {
         li.querySelector(".remove").addEventListener("click", function () {
             for (let j = 0; j < currentlyViewedGame.tasksArray.length; j++) {
                 if (currentlyViewedGame.tasksArray[j] === newTask) {
+                    if(currentlyViewedGame.tasksArray[j].isDone){
+                        currentlyViewedGame.taskDoneCount--;
+                    }
                     currentlyViewedGame.tasksArray.splice(j, 1);
-                    currentlyViewedGame.taskDoneCount--;
                     console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${currentlyViewedGame.taskDoneCount}`);
                     break; // stop after removing
                 }
@@ -452,10 +454,12 @@ function showTasksForThisGame(index) {
             for (let j = 0; j < gameItself.tasksArray.length; j++) {
                 // remove from the game's tasks array
                 if (gameItself.tasksArray[j].task === storedTask.task) {
+                    if(gameItself.tasksArray[j].isDone){
+                        gameItself.taskDoneCount--;
+                    }
                     gameItself.tasksArray.splice(j, 1);
-                    gameItself.taskDoneCount--;
                     console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${gameItself.taskDoneCount}`);
-                    break;
+                    break; // stop after removing
                 }
             }
 
