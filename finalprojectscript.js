@@ -221,7 +221,7 @@ addTasks.addEventListener("click", function () {
         li.querySelector(".remove").addEventListener("click", function () {
             for (let j = 0; j < currentlyViewedGame.tasksArray.length; j++) {
                 if (currentlyViewedGame.tasksArray[j] === newTask) {
-                    if(currentlyViewedGame.tasksArray[j].isDone){
+                    if (currentlyViewedGame.tasksArray[j].isDone) {
                         currentlyViewedGame.taskDoneCount--;
                     }
                     currentlyViewedGame.tasksArray.splice(j, 1);
@@ -273,7 +273,7 @@ clearallbtn.addEventListener("click", function () {
 });
 
 lightdarktoggle.addEventListener("click", function () {
-
+    document.body.classList.toggle("dark-mode");
 });
 
 function updateGameStatus(statusSpan, game) {
@@ -454,7 +454,7 @@ function showTasksForThisGame(index) {
             for (let j = 0; j < gameItself.tasksArray.length; j++) {
                 // remove from the game's tasks array
                 if (gameItself.tasksArray[j].task === storedTask.task) {
-                    if(gameItself.tasksArray[j].isDone){
+                    if (gameItself.tasksArray[j].isDone) {
                         gameItself.taskDoneCount--;
                     }
                     gameItself.tasksArray.splice(j, 1);
@@ -510,6 +510,8 @@ function setHoverEffects() {
     let btnhoverred = document.querySelectorAll(".remove");
     let btnhovertasktogglegreen = document.querySelectorAll(".status.complete");
     let btnhovertasktogglered = document.querySelectorAll(".status.not-started");
+    let btnhoverlightdarktoggle = document.getElementById("lightdarktoggle");
+
     btnhoverblue.forEach(function (btn) {
         btn.addEventListener("mouseover", function () {
             btn.style.backgroundColor = "rgba(80, 167, 248, 1)";
@@ -527,29 +529,36 @@ function setHoverEffects() {
             btn.style.color = "rgba(0, 0, 0, 1)";
         });
         btn.addEventListener("mouseout", function () {
-            // return to default
             btn.style.backgroundColor = "";
             btn.style.color = "";
         });
     });
     btnhovertasktogglegreen.forEach(function (btn) {
         btn.addEventListener("mouseover", function () {
-            btn.style.border = "2px solid #ff0000ff"
+            btn.style.border = "2px solid #ff0000ff";
         });
         btn.addEventListener("mouseout", function () {
-            // return to default
             btn.style.border = "";
         });
     });
     btnhovertasktogglered.forEach(function (btn) {
         btn.addEventListener("mouseover", function () {
-            btn.style.border = "2px solid #00ff22ff"
+            btn.style.border = "2px solid #00ff22ff";
         });
         btn.addEventListener("mouseout", function () {
-            // return to default
             btn.style.border = "";
         });
     });
+
+    btnhoverlightdarktoggle.addEventListener("mouseover", function () {
+        btnhoverlightdarktoggle.style.backgroundColor = "#ffffff";
+        btnhoverlightdarktoggle.style.color = "#000000";
+    });
+    btnhoverlightdarktoggle.addEventListener("mouseout", function () {
+        btnhoverlightdarktoggle.style.backgroundColor = "";
+        btnhoverlightdarktoggle.style.color = "";
+    });
+
 };
 
 // toggle placeholder text when "li"s are added/removed
