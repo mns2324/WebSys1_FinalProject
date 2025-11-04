@@ -157,7 +157,6 @@ addTasks.addEventListener("click", function () {
     let summary = summaryinput.value.trim();
     let task = taskinput.value.trim();
     let currentlyViewedGame = currentGamesArray[currentGamesIndex];
-    let tdCount = currentlyViewedGame.taskDoneCount
 
     if (summary === "" && task === "") {
         alert("Please enter something in the summary or task field.");
@@ -203,43 +202,17 @@ addTasks.addEventListener("click", function () {
                 statusBtn.classList.add("complete");
                 statusBtn.classList.remove("not-started");
                 statusBtn.textContent = "DONE";
-                tdCount++;
-                console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${tdCount}`);
+                currentlyViewedGame.taskDoneCount++;
+                console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${currentlyViewedGame.taskDoneCount}`);
             } else { // mark as not done
                 statusBtn.classList.remove("complete");
                 statusBtn.classList.add("not-started");
                 statusBtn.textContent = "NOT DONE";
-                tdCount--;
-                console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${tdCount}`);
+                currentlyViewedGame.taskDoneCount--;
+                console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${currentlyViewedGame.taskDoneCount}`);
             }
 
-            console.log(`tdCount: ${tdCount}`);
-            console.log(`newTask.isDone: ${newTask.isDone}`);
-            console.log(`Tasks array length: ${currentlyViewedGame.tasksArray.length}`);
-
-            if (tdCount === 0) {
-                statusSpan.classList.remove("complete");
-                statusSpan.classList.remove("in-progress");
-                statusSpan.classList.add("not-started");
-                statusSpan.textContent = "NOT STARTED";
-                console.log("pass 1");
-            } else if (tdCount > 0) {
-                statusSpan.classList.remove("complete");
-                statusSpan.classList.add("in-progress");
-                statusSpan.classList.remove("not-started");
-                statusSpan.textContent = "IN PROGRESS";
-                console.log("pass 2");
-            } else if (tdCount === currentlyViewedGame.tasksArray.length) {
-                statusSpan.classList.add("complete");
-                statusSpan.classList.remove("in-progress");
-                statusSpan.classList.remove("not-started");
-                statusSpan.textContent = "ALL COMPLETE!";
-                console.log("pass 3");
-                alert(`${currentlyViewedGame.game} - All tasks completed!`);
-            } else {
-                console.log("lol");
-                return;
-            }
+            updateGameStatus(statusSpan, currentlyViewedGame);
             setHoverEffects();
         });
 
@@ -249,10 +222,14 @@ addTasks.addEventListener("click", function () {
             for (let j = 0; j < currentlyViewedGame.tasksArray.length; j++) {
                 if (currentlyViewedGame.tasksArray[j] === newTask) {
                     currentlyViewedGame.tasksArray.splice(j, 1);
+                    currentlyViewedGame.taskDoneCount--;
+                    console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${currentlyViewedGame.taskDoneCount}`);
                     break; // stop after removing
                 }
             }
 
+            let statusSpan = currentList.querySelector(".status");
+            updateGameStatus(statusSpan, currentlyViewedGame);
             taskList.removeChild(li);
             showTasksForThisGame(currentGamesIndex); // refresh the task list display
         });
@@ -296,6 +273,32 @@ clearallbtn.addEventListener("click", function () {
 lightdarktoggle.addEventListener("click", function () {
 
 });
+
+function updateGameStatus(statusSpan, game) {
+    if (game.taskDoneCount === 0) {
+        statusSpan.classList.remove("complete");
+        statusSpan.classList.remove("in-progress");
+        statusSpan.classList.add("not-started");
+        statusSpan.textContent = "NOT STARTED";
+        console.log("pass 1");
+    } else if (game.taskDoneCount > 0 && game.taskDoneCount < game.tasksArray.length) {
+        statusSpan.classList.remove("complete");
+        statusSpan.classList.add("in-progress");
+        statusSpan.classList.remove("not-started");
+        statusSpan.textContent = "IN PROGRESS";
+        console.log("pass 2");
+    } else if (game.taskDoneCount === game.tasksArray.length) {
+        statusSpan.classList.add("complete");
+        statusSpan.classList.remove("in-progress");
+        statusSpan.classList.remove("not-started");
+        statusSpan.textContent = "ALL COMPLETE!";
+        console.log("pass 3");
+        alert(`${game.game} - All tasks completed!`);
+    } else {
+        console.log("lol");
+        return;
+    }
+};
 
 // update the counters and visibility of sections
 function updateCounters() {
@@ -450,10 +453,14 @@ function showTasksForThisGame(index) {
                 // remove from the game's tasks array
                 if (gameItself.tasksArray[j].task === storedTask.task) {
                     gameItself.tasksArray.splice(j, 1);
+                    gameItself.taskDoneCount--;
+                    console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${gameItself.taskDoneCount}`);
                     break;
                 }
             }
 
+            let statusSpan = currentList.querySelector(".status");
+            updateGameStatus(statusSpan, gameItself);
             gameTasks.removeChild(li);
 
             // reset tCount and renumber the remaining tasks
