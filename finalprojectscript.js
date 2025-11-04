@@ -56,11 +56,13 @@ addCurrent.addEventListener("click", function () {
         game: game,
         genre: genre,
         summary: "",
-        tasksArray: [] // tasks init'd/stored here
+        tasksArray: [], // tasks init'd/stored here
+        taskDoneCount: 0
     });
 
     let gameIndex = currentGamesArray.length - 1; // index of the newly added game
 
+    // X button
     li.querySelector(".remove").addEventListener("click", function () {
         currentList.removeChild(li);
         cCount--;
@@ -70,13 +72,14 @@ addCurrent.addEventListener("click", function () {
         updatePlaceholderText();
     });
 
+    // VIEW TASKS button
     li.querySelector(".view").addEventListener("click", function () {
         currentGamesIndex = gameIndex;
         showTasksForThisGame(currentGamesIndex);
 
+        // debug stuff
         const tasks = currentGamesArray[currentGamesIndex].tasksArray;
         console.log(`Currently viewing ${game} at index ${currentGamesIndex} with these tasks:`);
-
         if (tasks.length === 0) {
             console.log("No tasks added yet.");
         } else {
@@ -154,6 +157,7 @@ addTasks.addEventListener("click", function () {
     let summary = summaryinput.value.trim();
     let task = taskinput.value.trim();
     let currentlyViewedGame = currentGamesArray[currentGamesIndex];
+    let tdCount = currentlyViewedGame.taskDoneCount
 
     if (summary === "" && task === "") {
         alert("Please enter something in the summary or task field.");
@@ -191,18 +195,50 @@ addTasks.addEventListener("click", function () {
         const statusBtn = li.querySelector(".status");
         const newTask = { task: task, isDone: false };
         currentlyViewedGame.tasksArray.push(newTask);
-
         statusBtn.addEventListener("click", function () {
+            let statusSpan = currentList.querySelector(".status");
             newTask.isDone = !newTask.isDone; // flip the bool
 
             if (newTask.isDone) { // mark as done
                 statusBtn.classList.add("complete");
                 statusBtn.classList.remove("not-started");
                 statusBtn.textContent = "DONE";
+                tdCount++;
+                console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${tdCount}`);
             } else { // mark as not done
                 statusBtn.classList.remove("complete");
                 statusBtn.classList.add("not-started");
                 statusBtn.textContent = "NOT DONE";
+                tdCount--;
+                console.log(`Current tasks done for ${currentGamesArray[currentGamesIndex].game}: ${tdCount}`);
+            }
+
+            console.log(`tdCount: ${tdCount}`);
+            console.log(`newTask.isDone: ${newTask.isDone}`);
+            console.log(`Tasks array length: ${currentlyViewedGame.tasksArray.length}`);
+
+            if (tdCount === 0) {
+                statusSpan.classList.remove("complete");
+                statusSpan.classList.remove("in-progress");
+                statusSpan.classList.add("not-started");
+                statusSpan.textContent = "NOT STARTED";
+                console.log("pass 1");
+            } else if (tdCount > 0) {
+                statusSpan.classList.remove("complete");
+                statusSpan.classList.add("in-progress");
+                statusSpan.classList.remove("not-started");
+                statusSpan.textContent = "IN PROGRESS";
+                console.log("pass 2");
+            } else if (tdCount === currentlyViewedGame.tasksArray.length) {
+                statusSpan.classList.add("complete");
+                statusSpan.classList.remove("in-progress");
+                statusSpan.classList.remove("not-started");
+                statusSpan.textContent = "ALL COMPLETE!";
+                console.log("pass 3");
+                alert(`${currentlyViewedGame.game} - All tasks completed!`);
+            } else {
+                console.log("lol");
+                return;
             }
             setHoverEffects();
         });
@@ -218,7 +254,6 @@ addTasks.addEventListener("click", function () {
             }
 
             taskList.removeChild(li);
-
             showTasksForThisGame(currentGamesIndex); // refresh the task list display
         });
 
