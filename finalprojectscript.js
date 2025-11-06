@@ -408,6 +408,11 @@ lightdarktoggle.addEventListener("click", function () {
             console.log("red hovered");
         });
 
+        document.querySelectorAll("input, textarea").forEach(function (box) {
+            box.style.backgroundColor = "#ffffff";
+            box.style.color = "#000000";
+        })
+
         lightModeOn = true;
     } else {
         lightdarktoggle.textContent = "☀️";
@@ -437,6 +442,11 @@ lightdarktoggle.addEventListener("click", function () {
             btn.style.color = "";
             btn.style.borderColor = "";
         });
+
+        document.querySelectorAll("input, textarea").forEach(function (box) {
+            box.style.backgroundColor = "";
+            box.style.color = "";
+        })
 
         lightModeOn = false;
     }
