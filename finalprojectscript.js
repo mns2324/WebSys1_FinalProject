@@ -21,9 +21,9 @@ const tasksContainer = document.querySelector(".task-list");
 const entireGamesContainer = document.getElementById("gametrackercontainer");
 const gamesInputContainer = document.querySelector(".add-game")
 const gamesContainer = document.querySelector(".currentgames-backlog");
-
 // counters (for numbering items and total count)
 let cCount = 0, lCount = 0, tCount = 0;
+// set these as global instead of only setting in some functions so it can be tracked correctly
 let currentGamesIndex = -1;
 let currentlyViewedGame = null;
 
@@ -32,6 +32,7 @@ addCurrent.addEventListener("click", function () {
     let game = gameinput.value.trim();
     let genre = genreinput.value.trim();
 
+    // alert if both fields are empty
     if (game === "" || genre === "") {
         alert("Please enter both a game and its genre.");
         return;
@@ -48,6 +49,7 @@ addCurrent.addEventListener("click", function () {
         </div>  
     `;
 
+    // light/dark mode toggle for view & remove button
     if (lightModeOn) {
         li.querySelector(".view").style.backgroundColor = "#50A7F8";
         li.querySelector(".view").style.color = "#000000";
@@ -79,7 +81,7 @@ addCurrent.addEventListener("click", function () {
         currentList.removeChild(li);
         cCount--;
 
-        // if the game currently being viewed is deleted, clear its UI
+        // if the game currently being viewed is deleted, clear its task UI then hide it
         if (currentlyViewedGame && currentlyViewedGame.game === game) {
             taskList.innerHTML = "";
             description.textContent = "No description added yet.";
@@ -87,7 +89,6 @@ addCurrent.addEventListener("click", function () {
             clearallbtn.classList.remove("active");
             currentlyViewedGame = null;
 
-            // hide task view
             if (entireTasksContainer) {
                 entireTasksContainer.style.display = "none";
             }
@@ -121,7 +122,7 @@ addCurrent.addEventListener("click", function () {
             showTasksForThisGame(foundIndex);
         }
 
-        // debug stuff
+        // debug/console stuff
         const tasks = currentGamesArray[currentGamesIndex].tasksArray;
         console.log(`Currently viewing ${game} at index ${currentGamesIndex} with these tasks:`);
         if (tasks.length === 0) {
@@ -168,6 +169,7 @@ addLater.addEventListener("click", function () {
         </div>
     `;
 
+    // toggle light/dark mode for add to backlog/remove button
     if (lightModeOn) {
         li.querySelector(".add-btnBacklog").style.backgroundColor = "#50A7F8";
         li.querySelector(".add-btnBacklog").style.color = "#000000";
@@ -183,8 +185,6 @@ addLater.addEventListener("click", function () {
         li.querySelector(".remove").style.color = "";
         li.querySelector(".remove").style.borderColor = "";
     }
-
-
 
     li.querySelector(".remove").addEventListener("click", function () {
         laterList.removeChild(li);
@@ -218,10 +218,10 @@ const clearallbtn = document.getElementById("clearalltasks");
 addTasks.addEventListener("click", function () {
     let summary = summaryinput.value.trim();
     let task = taskinput.value.trim();
-    if (!currentlyViewedGame) {
-        alert("Please select a game from CURRENT GAMES to add tasks to.");
-        return;
-    }
+    // if (!currentlyViewedGame) {
+    //     alert("Please select a game from CURRENT GAMES to add tasks to.");
+    //     return;
+    // }
 
     if (summary === "" && task === "") {
         alert("Please enter something in the summary or task field.");
@@ -235,6 +235,7 @@ addTasks.addEventListener("click", function () {
         span.innerHTML = `<button class="remove">CLEAR</button>`;
         description.appendChild(span);
 
+        // toggle light/dark mode for clear button
         if (lightModeOn) {
             span.querySelector(".remove").style.backgroundColor = "#CC0303";
             span.querySelector(".remove").style.color = "#000000";
@@ -262,6 +263,7 @@ addTasks.addEventListener("click", function () {
             <button class="remove">X</button>
         `;
 
+        // toggle light/dark mode for remove button
         if (lightModeOn) {
             li.querySelector(".remove").style.backgroundColor = "#CC0303";
             li.querySelector(".remove").style.color = "#000000";
@@ -274,12 +276,11 @@ addTasks.addEventListener("click", function () {
 
         taskList.appendChild(li);
 
-        // toggle task status
         const statusBtn = li.querySelector(".status");
         const newTask = { task: task, isDone: false };
         currentlyViewedGame.tasksArray.push(newTask);
-        // keep taskDoneCount accurate with updateGameStatus()
-        // (initially newTask.isDone === false so no increment)
+
+        // toggle task status
         statusBtn.addEventListener("click", function () {
             newTask.isDone = !newTask.isDone; // flip the bool
             if (newTask.isDone) { // mark as done
@@ -300,10 +301,10 @@ addTasks.addEventListener("click", function () {
             setHoverEffects();
         });
 
-
         // remove a task
         li.querySelector(".remove").addEventListener("click", function () {
             for (let j = 0; j < currentlyViewedGame.tasksArray.length; j++) {
+                // decrement only if the task is marked as done, otherwise game status won't be affected
                 if (currentlyViewedGame.tasksArray[j] === newTask) {
                     if (currentlyViewedGame.tasksArray[j].isDone) {
                         currentlyViewedGame.taskDoneCount--;
@@ -317,7 +318,7 @@ addTasks.addEventListener("click", function () {
             taskList.removeChild(li);
             updateGameStatus(currentlyViewedGame);
 
-            // refresh only numbering and clearallbtn state
+            // refresh only the task numbering
             tCount = 0;
             const allTasks = taskList.querySelectorAll("li");
             for (let k = 0; k < allTasks.length; k++) {
@@ -325,15 +326,7 @@ addTasks.addEventListener("click", function () {
                 let span = allTasks[k].querySelector("span");
                 span.textContent = `${tCount}. ${currentlyViewedGame.tasksArray[k].task}`;
             }
-
-            if (currentlyViewedGame.tasksArray.length >= 2) {
-                clearallbtn.classList.remove("inactive");
-                clearallbtn.classList.add("active");
-            } else {
-                clearallbtn.classList.add("inactive");
-                clearallbtn.classList.remove("active");
-            }
-
+            
             updatePlaceholderText();
         });
 
@@ -364,10 +357,8 @@ clearallbtn.addEventListener("click", function () {
         currentlyViewedGame.taskDoneCount = 0;
         tCount = 0;
 
-        // deactivate clear button
         clearallbtn.classList.add("inactive");
         clearallbtn.classList.remove("active");
-
         updatePlaceholderText();
 
         // update the corresponding game’s status display
@@ -379,6 +370,7 @@ clearallbtn.addEventListener("click", function () {
 let lightModeOn = false;
 const lonedivider = document.querySelector(".hdivider");
 
+// the MOST efficient dark mode toggle code you've ever seen /s
 lightdarktoggle.addEventListener("click", function () {
     if (!lightModeOn) {
         lightdarktoggle.textContent = "🌑";
@@ -467,6 +459,9 @@ function updateGameStatus(game) {
     let total = game.tasksArray.length;
     let done = game.taskDoneCount;
 
+    // if 0 tasks done = not started
+    // if >0 tasks done & < total = in progress
+    // if done === total = complete
     statusSpan.classList.remove("not-started", "in-progress", "complete");
     if (total === 0) {
         statusSpan.textContent = "NOT STARTED";
@@ -491,6 +486,7 @@ function updateGameStatus(game) {
     }
 };
 
+// find the correct game's status span to change its status
 function findCorrectStatusSpan(gameObject) {
     const allListItems = document.querySelectorAll("#currentGamesList li");
 
@@ -541,6 +537,7 @@ function moveToCurrentGames(game, genre) {
         </div>  
     `;
 
+    // toggle light/dark mode for view tasks/x button
     if (lightModeOn) {
         li.querySelector(".view").style.backgroundColor = "#50A7F8";
         li.querySelector(".view").style.color = "#000000";
@@ -557,7 +554,6 @@ function moveToCurrentGames(game, genre) {
         li.querySelector(".remove").style.borderColor = "";
     }
 
-
     // push the moved game to the array first
     currentGamesArray.push({
         game: game,
@@ -573,15 +569,14 @@ function moveToCurrentGames(game, genre) {
         currentList.removeChild(li);
         cCount--;
 
-        // if currently viewed game is deleted, clear its UI
+        // if currently viewed game is deleted, clear its task UI and hide it
         if (currentlyViewedGame && currentlyViewedGame.game === game) {
             taskList.innerHTML = "";
             description.textContent = "No description added yet.";
             clearallbtn.classList.add("inactive");
             clearallbtn.classList.remove("active");
             currentlyViewedGame = null;
-
-            // hide task view
+            
             if (entireTasksContainer) {
                 entireTasksContainer.style.display = "none";
             }
@@ -612,8 +607,7 @@ function moveToCurrentGames(game, genre) {
             showTasksForThisGame(foundIndex);
         }
 
-
-        // debug stuff
+        // debug/console stuff
         const tasks = currentGamesArray[currentGamesIndex].tasksArray;
         console.log(`Currently viewing ${game} at index ${currentGamesIndex} with these tasks:`);
         if (tasks.length === 0) {
@@ -642,7 +636,7 @@ function showTasksForThisGame(index) {
     entireTasksContainer.style.display = "";
 
     const gameItself = currentGamesArray[index]; // shows tasks based on game index
-    currentlyViewedGame = gameItself; // ensure global points to this object
+    currentlyViewedGame = gameItself; // ensure global var points to this object
     const gameHeader = document.getElementById("tasksfor");
     const gameDesc = document.getElementById("placeholderDesc");
     const gameTasks = document.getElementById("taskList");
@@ -724,7 +718,6 @@ function showTasksForThisGame(index) {
             li.querySelector(".remove").style.color = "";
             li.querySelector(".remove").style.borderColor = "";
         }
-
 
         const statusBtn = li.querySelector(".status");
         statusBtn.addEventListener("click", function () {
@@ -877,8 +870,6 @@ function setHoverEffects() {
     });
 }
 
-
-
 function updatePlaceholderText() {
     const placeholderGame = document.getElementById("placeholderGame");
     const placeholderBacklog = document.getElementById("placeholderBacklog");
@@ -925,4 +916,5 @@ function updateCounters() {
 setHoverEffects();
 updateCounters();
 updatePlaceholderText();
+
 
