@@ -696,9 +696,17 @@ function showTasksForThisGame(index) {
         let taskText = storedTask.task;
         tCount++;
 
-        // status text/class
-        let statusText = storedTask.isDone ? "DONE" : "NOT DONE";
-        let statusClass = storedTask.isDone ? "complete" : "not-started";
+        // status text/class (forgot ternary isn't allowed yet)
+        let statusText;
+        let statusClass;
+        
+        if (storedTask.isDone) {
+            statusText = "DONE";
+            statusClass = "complete";
+        } else {
+            statusText = "NOT DONE";
+            statusClass = "not-started";
+        }
 
         let li = document.createElement("li");
         li.innerHTML = `          
@@ -917,3 +925,4 @@ function updateCounters() {
 setHoverEffects();
 updateCounters();
 updatePlaceholderText();
+
